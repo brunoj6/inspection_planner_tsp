@@ -213,6 +213,7 @@ bool plan(koptplanner::inspection::Request  &req,
   plannerLog.close();
 
   /* initialize problem setup */
+ROS_ERROR("made it to 0");
   g_cost = DBL_MAX;
   ROS_INFO("Request received");
 #ifdef __TIMING_INFO__
@@ -245,7 +246,7 @@ bool plan(koptplanner::inspection::Request  &req,
     koptError = NO_START_POSITION;
     return true;
   }
-
+  ROS_ERROR("made it to 1");
   timeval time;
   gettimeofday(&time, NULL);
   long millisecStart = time.tv_sec * 1000 + time.tv_usec / 1000;
@@ -279,7 +280,7 @@ bool plan(koptplanner::inspection::Request  &req,
     tmp->Fixpoint = true;
     tri.push_back(tmp);
   }
-
+  ROS_ERROR("made it to 2");
   /* obstacles */
   std::vector<geometry_msgs::Pose>::iterator itPose = req.obstaclesPoses.begin();
   std::vector<int>::iterator itOccupancy = req.obstacleIntransparancy.begin();
@@ -316,9 +317,11 @@ bool plan(koptplanner::inspection::Request  &req,
       g_max_obs_dim=obs->size[2];
     sys_t::obstacles.push_back(obs);
   }
+  ROS_ERROR("made it to 3");
   /* mesh */
   for(std::vector<geometry_msgs::Polygon>::iterator it = req.inspectionArea.begin(); it != req.inspectionArea.end(); it++)
   {
+  ROS_ERROR("made it to mesh");
     tri_t* tmp = new tri_t;
     tmp->x1[0] = (*it).points[0].x;
     tmp->x1[1] = (*it).points[0].y;
@@ -333,7 +336,7 @@ bool plan(koptplanner::inspection::Request  &req,
     tmp->x3[2] = (*it).points[2].z;
 
     Vector3f a = ((tmp->x2-tmp->x1).cross(tmp->x3-tmp->x2))/2;
-
+    ROS_ERROR("Finished Vector Generation");
     if(a.norm() == 0.0)
     {
       std::string pkgPath = ros::package::getPath("koptplanner");
@@ -384,7 +387,7 @@ bool plan(koptplanner::inspection::Request  &req,
     tmp->Fixpoint = true;
     tri.push_back(tmp);
   }
-  
+  ROS_ERROR("made it to 5");
   std::fstream file;
   file.open(g_tourlength.c_str(), std::ios::out);
   if(file.is_open())
@@ -411,6 +414,7 @@ bool plan(koptplanner::inspection::Request  &req,
     koptError = TOO_FEW_INSPECTION_AREAS;
     return true;
   }
+ROS_ERROR("made it to 6");
   if(VP)
   {
     delete[] VP;
@@ -429,6 +433,7 @@ bool plan(koptplanner::inspection::Request  &req,
       lookupFile >> lookupTable[i][j];
     }
   }
+ROS_ERROR("made it to 7");
 #else
   VP = new StateVector[maxID];
 #endif

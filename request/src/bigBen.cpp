@@ -237,6 +237,7 @@ std::vector<nav_msgs::Path> * readSTLfile(std::string name)
     p.header.seq = k;
     mesh->push_back(p);
     k++;
+    ROS_INFO("OUT");
   }
   free(line);
   f.close();

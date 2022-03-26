@@ -1,6 +1,9 @@
 <launch>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find koptplanner)/rviz/mesh_viz.rviz" />
     <node name="Inspection_Planner" pkg="koptplanner" type="plan" clear_params="true" output="screen">
 	    <rosparam file="$(find koptplanner)/koptParam.yaml"/>
     </node>
+    <node pkg="tf" type="static_transform_publisher" name="map_to_kopt" args="0 0 0 0 0 0 1 kopt_frame map 100" />
+
 </launch>
 
